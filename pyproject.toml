@@ -1,0 +1,35 @@
+[project]
+name = "openai-batch-gen"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Jakub Szulc",email = "58491724+j-szulc@users.noreply.github.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.poetry]
+packages = [{include = "openai_batch_gen", from = "src"}]
+
+[tool.poetry.scripts]
+request = "openai_batch_gen.cli.request:main"
+response = "openai_batch_gen.cli.response:main"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+openai-batch-gen = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+pydantic = ">=2.11.7,<3"
+mmh3 = ">=5.2.0,<6"
