@@ -5,10 +5,15 @@ import sys
 
 from openai_batch_gen.schema.response import BatchResponse
 
-def main():
-    parser = argparse.ArgumentParser(description="Parse OpenAI batch response")
+DESCRIPTION = "Parse OpenAI batch response"
+def get_parser(parser = argparse.ArgumentParser(description=DESCRIPTION)):
     parser.add_argument("file", type=str, help="JSONL file to read user messages from")
-    args = parser.parse_args()
+    return parser
+
+def main(args = None):
+    if args is None:
+        parser = get_parser()
+        args = parser.parse_args()
 
     responses = [BatchResponse.model_validate_json(line.strip()) for line in Path(args.file).read_text().splitlines()]
     for response in responses:
