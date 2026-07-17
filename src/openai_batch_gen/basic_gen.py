@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from .schema.request import BatchRequest, BatchRequestBody, BatchRequestMessage, BatchRequestMessage, BatchRequestId
-from .utils import mmh3_64, uuid64
+from common.hashing import mmh3_64, uuid64
 
 @dataclass
 class BasicGen:

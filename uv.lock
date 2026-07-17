@@ -12,6 +12,17 @@ wheels = [
 ]
 
 [[package]]
+name = "common"
+version = "0.1.0"
+source = { directory = "../common" }
+dependencies = [
+    { name = "mmh3" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "mmh3", specifier = ">=5.2.0" }]
+
+[[package]]
 name = "mmh3"
 version = "5.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -112,12 +123,14 @@ name = "openai-batch-gen"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "common" },
     { name = "mmh3" },
     { name = "pydantic" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "common", directory = "../common" },
     { name = "mmh3", specifier = ">=5.2.0" },
     { name = "pydantic", specifier = ">=2.11.7" },
 ]

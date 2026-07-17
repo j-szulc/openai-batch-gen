@@ -1,54 +1,59 @@
 from __future__ import annotations
 
-from typing import Any, List
+from typing import Any, List, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 from .request import BatchRequestMessage, BatchRequestId
 
-class BatchResponseChoice(BaseModel):
+class BaseModelWithExtra(BaseModel):
+    model_config = ConfigDict(
+        extra='allow',
+    )
+
+class BatchResponseChoice(BaseModelWithExtra):
     index: int
     message: BatchRequestMessage
     logprobs: Any
     finish_reason: str
 
 
-class PromptTokensDetails(BaseModel):
+class PromptTokensDetails(BaseModelWithExtra):
     cached_tokens: int
     audio_tokens: int
 
-class CompletionTokensDetails(BaseModel):
+class CompletionTokensDetails(BaseModelWithExtra):
     reasoning_tokens: int
     audio_tokens: int
     accepted_prediction_tokens: int
     rejected_prediction_tokens: int
 
 
-class BatchResponseUsage(BaseModel):
-    input_tokens: int = Field(alias="prompt_tokens")
-    completion_tokens: int = Field(alias="completion_tokens")
-    total_tokens: int
-    prompt_tokens_details: PromptTokensDetails
-    completion_tokens_details: CompletionTokensDetails
+class BatchResponseUsage(BaseModelWithExtra):
+    input_tokens: Optional[int] = Field(alias="prompt_tokens", default=None)
+    completion_tokens: Optional[int] = Field(alias="completion_tokens", default=None)
+    total_tokens: Optional[int] = Field(default=None)
+    prompt_tokens_details: Optional[PromptTokensDetails] = Field(default=None)
+    completion_tokens_details: Optional[CompletionTokensDetails] = Field(default=None)
 
 
-class BatchResponseBody(BaseModel):
+class BatchResponseBody(BaseModelWithExtra):
     id: str
     object: str
     created: int
     model: str
     choices: List[BatchResponseChoice]
-    usage: BatchResponseUsage
-    service_tier: str
-    system_fingerprint: str
+    usage: Optional[BatchResponseUsage] = Field(default=None)
+    service_tier: Optional[str] = None
+    system_fingerprint: Optional[str] = None
 
 
-class BatchResponseInner(BaseModel):
+class BatchResponseInner(BaseModelWithExtra):
     status_code: int
     request_id: str
     body: BatchResponseBody
 
 
-class BatchResponse(BaseModel):
+class BatchResponse(BaseModelWithExtra):
     id: str
     custom_id: BatchRequestId
     response: BatchResponseInner

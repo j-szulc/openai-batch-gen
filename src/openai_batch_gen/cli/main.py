@@ -12,8 +12,8 @@ from pathlib import Path
 
 from .request import main as request_main, get_parser as request_parser
 from .response import main as response_main, get_parser as response_parser
-from .utils import main as utils_main, get_parser as utils_parser
-
+from .utils_catl import main as utils_catl_main, get_parser as utils_catl_parser
+from .utils_extract import main as utils_extract_main, get_parser as utils_extract_parser
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="OpenAI Batch CLI")
@@ -21,7 +21,8 @@ def main():
     subparsers = parser.add_subparsers(help="Subcommand", dest="command")
     request_parser(subparsers.add_parser("request"))
     response_parser(subparsers.add_parser("response"))
-    utils_parser(subparsers.add_parser("utils"))
+    utils_catl_parser(subparsers.add_parser("utils_catl"))
+    utils_extract_parser(subparsers.add_parser("utils_extract"))
     args = parser.parse_args()
 
     # If no command is provided, show help
@@ -32,7 +33,8 @@ def main():
     {
         "request": request_main,
         "response": response_main,
-        "utils": utils_main,
+        "utils_catl": utils_catl_main,
+        "utils_extract": utils_extract_main,
     }[args.command](args)
     
 
